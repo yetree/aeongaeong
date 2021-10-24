@@ -104,7 +104,7 @@ module.exports = {
       }
     } else {
       try {
-        const results = await youtube.searchVideos(search, 1, { part: "id" });
+        const results = await youtube.searchVideos(search, 1, { part: "snippet" });
 
         if (!results.length) {
           message.reply(i18n.__("play.songNotFound")).catch(console.error);

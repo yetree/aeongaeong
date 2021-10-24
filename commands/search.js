@@ -19,35 +19,40 @@ module.exports = {
     const search = args.join(" ");
 
     let resultsEmbed = new MessageEmbed()
-      .setTitle(i18n.__("search.resultEmbedTitle"))
+      .setTitle((i18n.__("search.resultEmbedTtile")).replace(/[^a-zA-Z0-9]/g,'_'))
       .setDescription(i18n.__mf("search.resultEmbedDesc", { search: search }))
       .setColor("#F8AA2A");
 
     try {
       const results = await youtube.searchVideos(search, 10);
-      results.map((video, index) => resultsEmbed.addField(video.shortURL, `${index + 1}. ${video.title}`));
+      results.map((video, index) => resultsEmbed.addField( `${index + 1}. ${video.title}`,video.shortURL));
 
       let resultsMessage = await message.channel.send(resultsEmbed);
 
       function filter(msg) {
-        const pattern = /^[1-9][0]?(\s*,\s*[1-9][0]?)*$/;
+        if(msg.content === 'cancel' || msg.content === 'c')
+          return msg;
+        const pattern = /^[0-9]{1,2}(\s*,\s*[0-9]{1,2})*$/;
         return pattern.test(msg.content);
       }
 
       message.channel.activeCollector = true;
       const response = await message.channel.awaitMessages(filter, { max: 1, time: 30000, errors: ["time"] });
+      console.log(response);
       const reply = response.first().content;
-
-      if (reply.includes(",")) {
+      if(reply.includes("cancel")){
+        message.reply('검색을 취소합니다.');
+      }
+      else if (reply.includes(",")) {
         let songs = reply.split(",").map((str) => str.trim());
-
         for (let song of songs) {
           await message.client.commands
             .get("play")
-            .execute(message, [resultsEmbed.fields[parseInt(song) - 1].name]);
+            .execute(message, [resultsEmbed.fields[parseInt(song) - 1].value, resultsEmbed.fields[parseInt]]);
         }
       } else {
-        const choice = resultsEmbed.fields[parseInt(response.first()) - 1].name;
+        console.log(JSON.stringify(resultsEmbed));
+        const choice = resultsEmbed.fields[parseInt(response.first()) - 1].value;
         message.client.commands.get("play").execute(message, [choice]);
       }
 

@@ -12,12 +12,13 @@ module.exports = {
   aliases: ["pl"],
   description: i18n.__("playlist.description"),
   async execute(message, args) {
+    return;
     const { channel } = message.member.voice;
     const serverQueue = message.client.queue.get(message.guild.id);
 
     if (!args.length)
       return message
-        .reply(i18n.__mf("playlist.usagesReply", { prefix: message.client.prefix }))
+        .reply(i18n.__mf("playlist.usageReply", { prefix: message.client.prefix }))
         .catch(console.error);
     if (!channel) return message.reply(i18n.__("playlist.errorNotChannel")).catch(console.error);
 
@@ -69,7 +70,7 @@ module.exports = {
       }
     } else {
       try {
-        const results = await youtube.searchPlaylists(search, 1, { part: "id" });
+        const results = await youtube.searchPlaylists(search, 1, { part: "snippet" });
         playlist = results[0];
         videos = await playlist.getVideos(MAX_PLAYLIST_SIZE, { part: "snippet" });
       } catch (error) {
