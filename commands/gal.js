@@ -4,24 +4,40 @@ const i18n = require("../util/i18n");
 module.exports = {
   name: "gal",
   aliases: ["g"],
-  description: i18n.__("help.description"),
-  async execute(message,args) {
-    let commands = message.client.commands.array();
+  description: i18n.__("gal.description"),
+  async execute(message, args) {
+    //'gal'만 입력시 안내 문구 출력
+    if (!args.length) {
+        return message
+	    .reply(i18n.__mf("gal.howToUse"))
+	    .catch(console.error);
+    }
 
-    let galEmbed = new MessageEmbed()
-      .setTitle(i18n.__("gal.embedTitle"))
-      .setDescription(i18n.__("gal.embedDescription"))
-      .setColor("#F8AA2A");
-    const context = args.join(" ");
-    galEmbed.addField(       
-      "\u200b",
-      `**${context}**`,
-      true
-    );
+    const context = args.join(" "); //공백 허용
+    message.channel.send(i18n.__("gal.player")); //ko.json에 저장된 유저 멘션
     
+    let galEmbed = new MessageEmbed()
+      .setTitle(i18n.__mf("gal.embedTitle", {context: context}))  //공지 타이틀
+      //.setDescription(i18n.__("gal.embedDescription"))  //공지 설명
+      .setColor("#F8AA2A");
 
-    galEmbed.setTimestamp();
+    galEmbed.setTimestamp(); //입력 시간 출력
 
-    return message.channel.send(galEmbed).catch(console.error);
+    try {
+        galMessage = await message.channel.send(galEmbed);
+	//emoji 반응 추가
+        await galMessage.react("<:ri:925626746500431923>");
+        await galMessage.react("<:gyo:925677426955145246>");
+        await galMessage.react("<:chang:925626874242170931>");
+        await galMessage.react("<:moo:925626784815398983>");
+        await galMessage.react("<:pu:925677200240422922>");
+        await galMessage.react("<:al:925626851613872128>");
+        await galMessage.react("<:tte:925626722873909308>");
+        await galMessage.react("<:pi:925626916642390046>");
+        await galMessage.react("<:seb:925626816247496775>");
+    } catch (error) {
+        console.error(error);
+    }
+    return;
   }
 };
