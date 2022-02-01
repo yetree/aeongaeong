@@ -165,6 +165,11 @@
 		"errorCommand": "There was an error executing that command."
 	},
 	"gal": {
-		"embedDescription": "gal.embedDescription"
-	}
+		"embedDescription": "gal.embedDescription",
+		"description": "gal.description",
+		"embedTitle": "gal.embedTitle",
+		"player": "gal.player"
+	},
+	"<@!493327805288022026>": "<@!493327805288022026>",
+	"공지 ": "공지 "
 }
