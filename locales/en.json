@@ -163,5 +163,13 @@
 		"errorNotChannel": "You need to join a voice channel first!",
 		"cooldownMessage": "please wait {time} more second(s) before reusing the `{name}` command.",
 		"errorCommand": "There was an error executing that command."
-	}
+	},
+	"gal": {
+		"embedDescription": "gal.embedDescription",
+		"description": "gal.description",
+		"embedTitle": "gal.embedTitle",
+		"player": "gal.player"
+	},
+	"<@!493327805288022026>": "<@!493327805288022026>",
+	"공지 ": "공지 "
 }
